@@ -9,6 +9,7 @@ public class Shooter : MonoBehaviour
 
     [SerializeField] float bulletSpeed = 1.0f;
 
+
     void ApplyForce(Rigidbody rigid)
     {
         Vector3 force = shootPoint.forward * bulletSpeed;
@@ -17,14 +18,21 @@ public class Shooter : MonoBehaviour
 
     public void OnFire()
     {
-
         GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, shootPoint.rotation, null);
 
         if (bullet.TryGetComponent(out Rigidbody rigid))
             ApplyForce(rigid);
 
-        Destroy(bullet, 10f);
+       
 
     }
 
+    public void OnCollisionEnter(Collision other)
+    {
+
+        if(other.gameObject.layer == LayerMask.NameToLayer("Target"))
+        {
+            Destroy(bulletPrefab);
+        }
+    }
 }
